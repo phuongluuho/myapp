@@ -1,21 +1,16 @@
-# Sử dụng ảnh nền Node.js đã được build sẵn (dòng lệnh FROM)
-FROM node:18-alpine
-
-# Thiết lập thư mục làm việc bên trong container
+# Use the official Node.js base image
+FROM node:current-alpine
+LABEL org.opencontainers.image.authors="@phuongluuho"
+# Create the working directory inside the container.
 WORKDIR /app
-
-# Copy package.json và package-lock.json (nếu có) để cài đặt dependencies trước, tận dụng cache
+# Copy package.json and package-lock.json (if present) first to install dependencies and leverage Docker’s build cache
 COPY package*.json ./
-
-# Cài đặt các gói cần thiết
+# Install the necessary packages.
 RUN npm install
-
-# Copy toàn bộ mã nguồn (bao gồm app.js, thư mục views, v.v.) vào container
+# Copy all source code (including app.js, views folder, etc.) into the container.
 COPY . .
-
-# Mở cổng ứng dụng (phù hợp với PORT mà Node.js sẽ lắng nghe)
-EXPOSE 3000
-
-# Chạy ứng dụng khi container khởi động
+# # Open the application port (matching the PORT that Node.js will listen on)
+EXPOSE 8080
+# # Open the application port (matching the PORT that Node.js will listen on)
 CMD ["node", "app.js"]
-
+~
